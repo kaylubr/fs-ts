@@ -13,13 +13,13 @@ app.get('/hello', (_req, res) => {
 
 app.get('/bmi', (req, res) => {
   if (isNotNumber(req.query.height) || isNotNumber(req.query.weight))
-    res.status(400).json({ error: 'malformatted parameters' });
+    return res.status(400).json({ error: 'malformatted parameters' });
 
   const height = Number(req.query.height);
   const weight = Number(req.query.weight);
   const bmi = calculateBmi(height, weight);
 
-  res.json({ height, weight, bmi });
+  return res.json({ height, weight, bmi });
 });
 
 app.post('/exercises', (req, res) => {
@@ -27,20 +27,22 @@ app.post('/exercises', (req, res) => {
   const { daily_exercises, target } = req.body;
   
   if (!daily_exercises || !target) {
-    res.status(400).json({ error: 'parameters missing' });
+    return res.status(400).json({ error: 'parameters missing' });
   };
 
   if (!allNumber(daily_exercises) || isNaN(Number(target))) {
-    res.status(400).json({ error: 'malformatted parameters' });
+    return res.status(400).json({ error: 'malformatted parameters' });
   };
 
   const result = exerciseCalculator(
     daily_exercises as number[], Number(target)
   );
 
-  res.json(result);
+  return res.json(result);
 });
 
 const PORT = 3000;
 
-app.listen(PORT);
+app.listen(PORT, () => {
+  console.log(`Server listening to PORT: ${PORT}`);
+});
