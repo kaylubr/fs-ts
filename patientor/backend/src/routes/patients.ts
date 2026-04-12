@@ -6,13 +6,15 @@ import type { Entry, NewEntry, NewPatient, Patient } from '../types.ts';
 const router = express.Router();
 
 router.get('/', (_req, res) => {
-  const patients = patientsService.getPatients();
+  const patients = patientsService.getNonSensitivePatients();
   return res.json(patients);
 });
 
 router.get('/:id', (req, res) => {
   try {
     const patient = patientsService.getPatient(req.params.id);
+    console.log(patient);
+    
     return res.json(patient);
   } catch (error: unknown) {
     let errorMessage = 'Something went wrong: ';

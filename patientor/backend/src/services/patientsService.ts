@@ -1,10 +1,20 @@
 import { v1 as uuid } from 'uuid';
 import patients from '../../data/patients.ts';
-import { EntrySchema, type Entry, type NewEntry, type NewPatient, type Patient } from '../types.ts';
+import { EntrySchema, type Entry, type NewEntry, type NewPatient, type NonSensitivePatient, type Patient } from '../types.ts';
 import z from 'zod';
 
 const getPatients = (): Patient[] => {
   return patients;
+};
+
+const getNonSensitivePatients = (): NonSensitivePatient[] => {
+  return patients.map(({ id, name, dateOfBirth, gender, occupation }) => ({
+    id,
+    name,
+    dateOfBirth,
+    gender,
+    occupation
+  }));
 };
 
 const getPatient = (id: string): Patient => {
@@ -49,6 +59,7 @@ const addEntry = (id: string, obj: NewEntry): Entry => {
 
 export default {
   getPatients,
+  getNonSensitivePatients,
   getPatient,
   addPatient,
   addEntry,
